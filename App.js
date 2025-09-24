@@ -206,6 +206,38 @@ function SelectColorScreen({ route, navigation }) {
     </SafeAreaView>
   );
 }
+function SelectResultScreen({ route, navigation }) {
+  const { phone, colorIndex } = route.params;
+  const color = phone.colors[colorIndex];
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <FlatList
+        data={[1]}
+        keyExtractor={() => "1"}
+        contentContainerStyle={{ padding: 16 }}
+        renderItem={() => (
+          <VsmartCard
+            phone={{ ...phone, image: color?.image || phone.image }}
+            onChooseColor={() => navigation.goBack()}
+            onBuy={() => Alert.alert("Đã thêm vào giỏ hàng")}
+          />
+        )}
+      />
+    </SafeAreaView>
+  );
+}
+
+function SelectPhoneFlow() {
+  return (
+    <SelectStack.Navigator>
+      <SelectStack.Screen name="SelectHome" component={SelectHomeScreen} options={{ title: "Select Phone" }} />
+      <SelectStack.Screen name="SelectColor" component={SelectColorScreen} options={{ title: "Chọn màu" }} />
+      <SelectStack.Screen name="SelectResult" component={SelectResultScreen} options={{ title: "Chi tiết" }} />
+    </SelectStack.Navigator>
+  );
+}
+
 /* ==================== STYLES ==================== */
 const styles = StyleSheet.create({
   // shared cards
