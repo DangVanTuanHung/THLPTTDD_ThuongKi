@@ -161,6 +161,51 @@ function SelectHomeScreen({ navigation }) {
     </SafeAreaView>
   );
 }
+function SelectColorScreen({ route, navigation }) {
+  const { phone } = route.params;
+  const [colorIndex, setColorIndex] = useState(0);
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#E5E7EB" }}>
+      <View style={styles.colorPanel}>
+        <Row center gap={10}>
+          <Image
+            source={{ uri: phone.colors[colorIndex]?.image || phone.image }}
+            style={styles.smallThumb}
+          />
+          <View style={{ flex: 1 }}>
+            <Text style={styles.h3}>{phone.name}</Text>
+            <Text style={styles.muted}>Cung cấp bởi Tiki Trading</Text>
+            <Text style={[styles.price, { marginTop: 6 }]}>{currency(phone.price)} đ</Text>
+          </View>
+        </Row>
+
+        <Text style={styles.panelTitle}>Chọn một màu bên dưới:</Text>
+
+        <View style={styles.colorStack}>
+          {phone.colors.map((c, i) => (
+            <Pressable
+              key={i}
+              style={[
+                styles.colorBox,
+                { backgroundColor: c.code },
+                i === colorIndex && styles.colorBoxSelected,
+              ]}
+              onPress={() => setColorIndex(i)}
+            />
+          ))}
+        </View>
+
+        <Pressable
+          style={styles.doneBtn}
+          onPress={() => navigation.navigate("SelectResult", { phone, colorIndex })}
+        >
+          <Text style={styles.doneBtnText}>XONG</Text>
+        </Pressable>
+      </View>
+    </SafeAreaView>
+  );
+}
 /* ==================== STYLES ==================== */
 const styles = StyleSheet.create({
   // shared cards
@@ -213,4 +258,47 @@ const styles = StyleSheet.create({
   },
   badgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#FF3B30" },
   badgeText: { fontSize: 12, color: "#FF3B30", fontWeight: "700" },
+  chooseBar: {
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#FAFAFA",
+  },
+  chooseBarText: { color: "#222", fontWeight: "600" },
+
+  buyBtn: {
+    marginTop: 10,
+    backgroundColor: "#E53935",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buyBtnText: { color: "#fff", fontWeight: "800", letterSpacing: 0.5 },
+
+  // Select Color screen
+  colorPanel: {
+    margin: 16,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: "#BDBDBD",
+  },
+  smallThumb: { width: 44, height: 44, borderRadius: 8, resizeMode: "cover" },
+  panelTitle: { marginTop: 12, marginBottom: 8, color: "#222", fontWeight: "700" },
+  colorStack: { gap: 10, width: 64, alignSelf: "center", marginVertical: 8 },
+  colorBox: { width: 60, height: 52, borderRadius: 6, borderWidth: 1, borderColor: "#fff" },
+  colorBoxSelected: { borderWidth: 3, borderColor: "#3B82F6" },
+  doneBtn: {
+    marginTop: 14,
+    backgroundColor: "#3B5CCC",
+    borderRadius: 10,
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  doneBtnText: { color: "#fff", fontWeight: "800", letterSpacing: 0.5 },
 });
