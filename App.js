@@ -314,7 +314,6 @@ function BottomTabsDemo() {
   );
 }
 
-
 /* ==================== STYLES ==================== */
 const styles = StyleSheet.create({
   // shared cards
