@@ -238,6 +238,83 @@ function SelectPhoneFlow() {
   );
 }
 
+/* ==================== BOTTOM TABS ==================== */
+const Tabs = createBottomTabNavigator();
+
+function HomeTab() {
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <FlatList
+        data={SAMPLE_PRODUCTS}
+        contentContainerStyle={{ padding: 16 }}
+        keyExtractor={(it) => it.id}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Row center>
+              <Image source={{ uri: item.image }} style={styles.phoneThumb} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.h3}>{item.title}</Text>
+                <Text style={styles.price}>{currency(item.price)} đ</Text>
+              </View>
+            </Row>
+          </View>
+        )}
+      />
+    </SafeAreaView>
+  );
+}
+
+function SearchTab() {
+  const [q, setQ] = useState("");
+  const result = useMemo(
+    () => SAMPLE_PRODUCTS.filter((p) => p.title.toLowerCase().includes(q.toLowerCase())),
+    [q]
+  );
+  return (
+    <SafeAreaView style={{ flex: 1, padding: 16 }}>
+      <TextInput value={q} onChangeText={setQ} placeholder="Nhập từ khóa..." style={styles.input} />
+      <FlatList
+        data={result}
+        keyExtractor={(it) => it.id}
+        renderItem={({ item }) => (
+          <Text style={{ paddingVertical: 8 }}>
+            • {item.title} – {currency(item.price)} đ
+          </Text>
+        )}
+      />
+    </SafeAreaView>
+  );
+}
+
+function ProfileTab() {
+  return (
+    <SafeAreaView style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <Ionicons name="person-circle" size={88} />
+      <Text style={styles.h2}>Dang Van Tuan Hung</Text>
+      <Text style={styles.muted}>Sinh viên • React Native</Text>
+    </SafeAreaView>
+  );
+}
+
+function BottomTabsDemo() {
+  return (
+    <Tabs.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: true,
+        tabBarIcon: ({ size }) => {
+          const name = route.name === "Home" ? "home" : route.name === "Search" ? "search" : "person";
+          return <Ionicons name={name} size={size} />;
+        },
+      })}
+    >
+      <Tabs.Screen name="Home" component={HomeTab} />
+      <Tabs.Screen name="Search" component={SearchTab} />
+      <Tabs.Screen name="Profile" component={ProfileTab} />
+    </Tabs.Navigator>
+  );
+}
+
+
 /* ==================== STYLES ==================== */
 const styles = StyleSheet.create({
   // shared cards
@@ -254,7 +331,6 @@ const styles = StyleSheet.create({
   priceBig: { fontSize: 24, color: "#d32f2f", fontWeight: "800", marginTop: 8 },
   muted: { color: "#6b7280" },
 
-  // Screen 1/4 card
   homeCard: {
     backgroundColor: "#fff",
     padding: 12,
@@ -333,4 +409,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   doneBtnText: { color: "#fff", fontWeight: "800", letterSpacing: 0.5 },
+  // lists / inputs
+  phoneThumb: { width: 64, height: 64, borderRadius: 10, resizeMode: "cover" },
+  heroImage: { width: "100%", height: 280, borderRadius: 16, marginBottom: 12, resizeMode: "cover" },
+  input: { borderWidth: 1, borderColor: "#E5E7EB", padding: 12, borderRadius: 12, marginBottom: 12 },
 });
