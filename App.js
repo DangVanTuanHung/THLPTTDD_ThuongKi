@@ -313,6 +313,89 @@ function BottomTabsDemo() {
     </Tabs.Navigator>
   );
 }
+/* ==================== DRAWER ==================== */
+const Drawer = createDrawerNavigator();
+
+function DrawerHome() {
+  return (
+    <SafeAreaView style={{ flex: 1, padding: 16 }}>
+      <Text style={styles.h2}>Drawer • Home</Text>
+      <Text style={styles.muted}>Bai 5.</Text>
+    </SafeAreaView>
+  );
+}
+
+function DrawerProfile() {
+  const [s1, setS1] = useState(true);
+  const [s2, setS2] = useState(false);
+  return (
+    <SafeAreaView style={{ flex: 1, padding: 16 }}>
+      <Text style={styles.h2}>Drawer • Profile</Text>
+      <Row center>
+        <Text style={{ flex: 1 }}>Bật thông báo</Text>
+        <Switch value={s1} onValueChange={setS1} />
+      </Row>
+      <Row center>
+        <Text style={{ flex: 1 }}>Nhận email</Text>
+        <Switch value={s2} onValueChange={setS2} />
+      </Row>
+    </SafeAreaView>
+  );
+}
+
+function DrawerDemo() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="DrawerHome" component={DrawerHome} options={{ title: "Home" }} />
+      <Drawer.Screen name="DrawerProfile" component={DrawerProfile} options={{ title: "Profile" }} />
+    </Drawer.Navigator>
+  );
+}
+
+/* ==================== ROOT DRAWER ==================== */
+const RootDrawer = createDrawerNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer theme={DefaultTheme}>
+      <RootDrawer.Navigator initialRouteName="SelectPhone">
+        <RootDrawer.Screen
+          name="SelectPhone"
+          component={SelectPhoneFlow}
+          options={{
+            title: "Bài 1: Select Phone",
+            drawerIcon: ({ size }) => <Ionicons name="phone-portrait" size={size} />,
+          }}
+        />
+        <RootDrawer.Screen
+          name="BottomTabs"
+          component={BottomTabsDemo}
+          options={{ title: "Bài 3: Bottom Tabs", drawerIcon: ({ size }) => <Ionicons name="grid" size={size} /> }}
+        />
+        <RootDrawer.Screen
+          name="StackTabParams"
+          component={StackTabParamsDemo}
+          options={{ title: "Bài 4: Stack + Tab", drawerIcon: ({ size }) => <Ionicons name="albums" size={size} /> }}
+        />
+        <RootDrawer.Screen
+          name="DrawerOnly"
+          component={DrawerDemo}
+          options={{ title: "Bài 5: Drawer", drawerIcon: ({ size }) => <Ionicons name="menu" size={size} /> }}
+        />
+      </RootDrawer.Navigator>
+    </NavigationContainer>
+  );
+}
+
+/* ==================== COMMONS ==================== */
+function ActivityScreen({ label = "Loading..." }) {
+  return (
+    <SafeAreaView style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator />
+      <Text style={{ marginTop: 8 }}>{label}</Text>
+    </SafeAreaView>
+  );
+}
 
 /* ==================== STYLES ==================== */
 const styles = StyleSheet.create({
